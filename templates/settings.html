@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}System Settings & Privacy Shield • Multimodal Agent{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="margin-bottom: 24px;">
+  <h2 style="font-family: var(--font-heading); font-size: 1.3rem; color: #f8fafc; margin-bottom: 6px;">
+    System Configuration & Privacy Safeguards
+  </h2>
+  <p style="font-size: 0.85rem; color: #94a3b8;">
+    Fine-tune sustained presence thresholds, multimodal fusion weights, and privacy protection protocols.
+  </p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+  <!-- Privacy Shield Configuration -->
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        Ethical AI & Privacy Safeguards
+      </div>
+      <span class="status-tag present">100% OFFLINE</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="padding: 14px; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-sm);">
+        <strong style="color: #34d399; font-size: 0.88rem; display: block; margin-bottom: 4px;">Zero-Telemetry Offline Architecture</strong>
+        <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+          This system is designed to operate <strong>entirely offline</strong>. All computer vision inference (OpenCV), 
+          audio signal telemetry, and agent-based reasoning execute locally on this machine. No video streams, audio, 
+          or biometric features are ever transmitted across external cloud networks.
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div>
+          <strong style="font-size: 0.88rem; color: #f8fafc; display: block;">Face Anonymization (Gaussian Blur)</strong>
+          <span style="font-size: 0.78rem; color: #94a3b8;">Automatically obfuscates participant faces in live and exported video views.</span>
+        </div>
+        <input type="checkbox" id="privacyBlurCheck" {% if session.privacy_mode %}checked{% endif %} style="transform: scale(1.3); cursor: pointer;">
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
+        <div>
+          <strong style="font-size: 0.88rem; color: #f8fafc; display: block;">Raw Video Storage Prohibition</strong>
+          <span style="font-size: 0.78rem; color: #94a3b8;">Only non-identifying telemetry (gaze scores, head angles, timestamps) are stored.</span>
+        </div>
+        <span class="status-tag present">ENFORCED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 1: Sustained Presence Thresholds -->
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        Scenario 1: Sustained Presence Thresholds
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div>
+        <label style="display: block; font-size: 0.82rem; color: #f8fafc; font-weight: 600; margin-bottom: 6px;">
+          Sustained Presence Requirement (% of Active Session)
+        </label>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <input type="range" id="sustainedSlider" min="40" max="85" value="{{ session.sustained_threshold_pct|round }}" 
+                 style="flex: 1; cursor: pointer;">
+          <span id="sustainedSliderVal" style="font-family: var(--font-mono); font-size: 0.95rem; color: #38bdf8; font-weight: 700; width: 45px;">
+            {{ session.sustained_threshold_pct|round }}%
+          </span>
+        </div>
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">
+          Participants must be tracked for at least this percentage of the lecture to be marked PRESENT.
+        </p>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.82rem; color: #f8fafc; font-weight: 600; margin-bottom: 6px;">
+          Fleeting Appearance Filter Cutoff (False-Positive Threshold)
+        </label>
+        <input type="text" class="btn btn-secondary" value="&le; 25% (Passer-by Elimination)" readonly style="width: 100%; cursor: default;">
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">
+          Any transient detections under 25% are classified as FLEETING visitors rather than enrolled attendees.
+        </p>
+      </div>
+
+      <div style="margin-top: 10px;">
+        <button id="saveSettingsBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          Apply & Save Thresholds
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const slider = document.getElementById('sustainedSlider');
+  const sliderVal = document.getElementById('sustainedSliderVal');
+  const blurCheck = document.getElementById('privacyBlurCheck');
+  const saveBtn = document.getElementById('saveSettingsBtn');
+
+  slider?.addEventListener('input', () => {
+    sliderVal.textContent = `${slider.value}%`;
+  });
+
+  saveBtn?.addEventListener('click', async () => {
+    const res = await fetch('/api/settings/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sustained_threshold: slider.value,
+        privacy_mode: blurCheck.checked
+      })
+    });
+    const data = await res.json();
+    alert('Settings successfully updated!');
+  });
+</script>
+{% endblock %}

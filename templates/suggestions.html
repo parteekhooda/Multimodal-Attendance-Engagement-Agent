@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Driven Teaching Suggestions • Multimodal Agent{% endblock %}
+
+{% block content %}
+<!-- Scenario 3 Architecture Banner -->
+<div class="glass-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-blue); background: linear-gradient(90deg, rgba(99, 102, 241, 0.08), rgba(15, 21, 35, 0.6));">
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+    <div>
+      <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: #f8fafc; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+        </svg>
+        Scenario 3: AI-Driven Teaching Suggestions (Assistive Decision-Support)
+      </h3>
+      <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5; max-width: 850px;">
+        Based on detected engagement patterns and classroom dynamics, the agent generates <strong>context-aware teaching suggestions</strong>. 
+        These insights assist instructors in adjusting pacing, introducing interactive activities, or addressing classroom management challenges. 
+        The system does not enforce decisions but acts as an <strong>assistive decision-support copilot</strong>.
+      </p>
+    </div>
+    <div style="text-align: right; white-space: nowrap;">
+      <span class="status-tag present" style="font-size: 0.82rem; padding: 6px 12px;">
+        OFFLINE REASONING: ACTIVE
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Left Column: Suggestion Stream Categorized -->
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          Pedagogical Suggestions & Triggered Alerts Feed
+        </div>
+        <span class="badge-pill">{{ suggestions|length }} Generated</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        {% for s in suggestions %}
+        <div class="suggestion-card {{ s.severity }}">
+          <div class="sug-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="sug-title">{{ s.title }}</span>
+              <span class="badge-pill" style="font-size: 0.65rem; padding: 1px 6px;">{{ s.category }}</span>
+            </div>
+            <span class="sug-time">{{ s.timestamp.split(' ')[1] if s.timestamp else '10:19 AM' }}</span>
+          </div>
+          <div class="sug-msg">{{ s.message }}</div>
+          <div class="sug-action-box">
+            <strong>Recommended Action:</strong> {{ s.pedagogical_action }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Interactive Offline AI Teaching Copilot -->
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="glass-card" style="padding: 18px;">
+      <div class="card-header" style="margin-bottom: 12px;">
+        <div class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Interactive Teaching Copilot (100% Offline AI)
+        </div>
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="prompt-chips">
+        <span class="chip" data-prompt="How is my session pacing right now?">⏱️ Assess Pacing</span>
+        <span class="chip" data-prompt="Generate 3 quick check-for-understanding questions for this topic">❓ 3 Formative Questions</span>
+        <span class="chip" data-prompt="Which students appear disengaged and need attention?">👥 Disengaged Learners</span>
+        <span class="chip" data-prompt="Summarize my overall classroom engagement and highlight key recommendations">📊 Session Summary</span>
+      </div>
+
+      <!-- Copilot Chat Box -->
+      <div class="copilot-box">
+        <div class="copilot-messages" id="copilotMessages">
+          <div class="chat-bubble assistant">
+            Hello Professor! I am your <strong>Offline Multimodal Teaching Copilot</strong>.<br><br>
+            I am currently analyzing your live session telemetry:
+            <ul>
+              <li><strong>Current Engagement:</strong> 74.5% (Optimal)</li>
+              <li><strong>Pacing Monologue:</strong> 4.2 minutes</li>
+              <li><strong>Sustained Presence:</strong> 12 / 14 students</li>
+            </ul>
+            Click any prompt above or type your question below for real-time pedagogical decision support!
+          </div>
+        </div>
+
+        <div class="copilot-input-area">
+          <input type="text" id="copilotInput" class="copilot-input" placeholder="Ask your teaching copilot (e.g. 'How is my pacing?')...">
+          <button id="copilotSendBtn" class="btn btn-primary" style="padding: 9px 14px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ai_agent.js') }}"></script>
+{% endblock %}

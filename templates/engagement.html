@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Engagement & Session Dynamics Analysis • Multimodal Agent{% endblock %}
+
+{% block content %}
+<!-- Scenario 2 Architecture Banner -->
+<div class="glass-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-cyan); background: linear-gradient(90deg, rgba(56, 189, 248, 0.08), rgba(15, 21, 35, 0.6));">
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+    <div>
+      <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: #f8fafc; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+        Scenario 2: Multimodal Engagement & Session Dynamics Analysis
+      </h3>
+      <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5; max-width: 850px;">
+        The agent continuously fuses behavioral indicators: <strong>head pose orientation</strong>, 
+        <strong>visual gaze alignment</strong>, <strong>movement micro-dynamics</strong>, and <strong>audio acoustic activity</strong>.
+        Multimodal signals are integrated to identify exact attention drops, collaborative interaction peaks, and session pacing bottlenecks.
+      </p>
+    </div>
+    <div style="text-align: right; white-space: nowrap;">
+      <span class="status-tag present" style="font-size: 0.82rem; padding: 6px 12px;">
+        MULTIMODAL FUSION: ACTIVE
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Dynamics KPI Stat Cards -->
+<div class="metrics-row">
+  <div class="stat-card">
+    <div class="stat-label">Session Average Engagement</div>
+    <div class="stat-value" style="color: #38bdf8;">74.5%</div>
+    <div class="stat-sub">Normative Target: 65% - 85%</div>
+  </div>
+
+  <div class="stat-card rose">
+    <div class="stat-label">Identified Attention Drops</div>
+    <div class="stat-value" style="color: #fb7185;">2 Flags</div>
+    <div class="stat-sub">Triggered when &lt; 45% for &gt; 1 min</div>
+  </div>
+
+  <div class="stat-card emerald">
+    <div class="stat-label">Interaction Peaks Achieved</div>
+    <div class="stat-value" style="color: #34d399;">3 Peaks</div>
+    <div class="stat-sub">High collaborative peer exchange</div>
+  </div>
+
+  <div class="stat-card amber">
+    <div class="stat-label">Peak Monologue Duration</div>
+    <div class="stat-value" style="color: #fbbf24;">15.0 min</div>
+    <div class="stat-sub">Recommended Max: 12.0 min</div>
+  </div>
+</div>
+
+<!-- Full Session Engagement Trend Chart -->
+<div class="glass-card" style="margin-bottom: 24px;">
+  <div class="card-header">
+    <div class="card-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+      50-Minute Session Engagement Dynamics (Vision + Audio Signal Timeline)
+    </div>
+    <div style="display: flex; gap: 12px; font-size: 0.78rem;">
+      <span style="display: flex; align-items: center; gap: 6px; color: #ef4444;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span> Attention Drop Flag
+      </span>
+      <span style="display: flex; align-items: center; gap: 6px; color: #10b981;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span> Interaction Peak
+      </span>
+    </div>
+  </div>
+
+  <div style="height: 320px; width: 100%;">
+    <canvas id="fullSessionChartCanvas"></canvas>
+  </div>
+</div>
+
+<!-- Seating Zone Dynamics & Breakdown -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+  <!-- Seating Zone Comparison Chart -->
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="9" y1="21" x2="9" y2="9"></line>
+        </svg>
+        Seating Zone Engagement Distribution
+      </div>
+      <span class="status-tag late" style="font-size: 0.75rem;">Disparity Detected</span>
+    </div>
+
+    <div style="height: 240px; width: 100%;">
+      <canvas id="zoneChartCanvas"></canvas>
+    </div>
+    <div style="margin-top: 14px; font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+      <strong>Spatial Insight:</strong> Front row participants maintain an average of <strong>84.2%</strong> attention, 
+      while back row learners drop to <strong>58.4%</strong> with frequent downward head tilt.
+    </div>
+  </div>
+
+  <!-- Multimodal Signal Weights & Heuristics -->
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Multimodal Signal Fusion Breakdown
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px;">
+          <span>Visual Gaze & Eye Alignment (&alpha; = 35%)</span>
+          <strong style="color: #38bdf8;">78.0% Attention</strong>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-fill cyan" style="width: 78%;"></div></div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px;">
+          <span>Head Pose Orientation (&beta; = 25%)</span>
+          <strong style="color: #818cf8;">82.0% Aligned</strong>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-fill cyan" style="width: 82%;"></div></div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px;">
+          <span>Audio Acoustic & Interaction Index (&gamma; = 25%)</span>
+          <strong style="color: #34d399;">62.5% Interaction</strong>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-fill green" style="width: 62%;"></div></div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px;">
+          <span>Inactivity & Drowsiness Penalty (&delta; = 15%)</span>
+          <strong style="color: #fb7185;">-4.2% Slump Penalty</strong>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-fill rose" style="width: 15%;"></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 18px; padding: 12px; background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-sm); font-size: 0.78rem; color: #cbd5e1; font-family: var(--font-mono);">
+      Formula: E(t) = 0.35&bull;Gaze + 0.25&bull;Pose + 0.25&bull;Audio - 0.15&bull;Inactivity
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Full Session Engagement Dynamics Chart
+    const ctx = document.getElementById('fullSessionChartCanvas');
+    if (ctx && typeof Chart !== 'undefined') {
+      const minutes = ['0m', '2.5m', '5m', '7.5m', '10m', '12.5m', '15m', '17.5m', '20m', '22.5m', '25m', '27.5m', '30m', '32.5m', '35m', '37.5m', '40m', '42.5m', '45m', '47.5m', '50m'];
+      const compositeEng = [72, 78.5, 81, 84, 76, 71, 64, 52, 42, 43.5, 75, 86.5, 83, 78, 73, 69, 65, 74, 80, 77, 79];
+      const audioInter = [30, 45, 60, 78, 40, 35, 25, 20, 18, 20, 70, 88, 75, 48, 40, 35, 30, 62, 76, 60, 55];
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: minutes,
+          datasets: [
+            {
+              label: 'Composite Engagement Score (%)',
+              data: compositeEng,
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.12)',
+              borderWidth: 2.5,
+              fill: true,
+              tension: 0.35,
+              pointRadius: (c) => (c.raw <= 45 ? 7 : (c.raw >= 85 ? 7 : 3)),
+              pointBackgroundColor: (c) => (c.raw <= 45 ? '#ef4444' : (c.raw >= 85 ? '#10b981' : '#38bdf8')),
+              pointBorderColor: '#0a0d14',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Audio Interaction Index (%)',
+              data: audioInter,
+              borderColor: '#a855f7',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 } }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 }, callback: v => `${v}%` }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#f8fafc', font: { family: 'Outfit', size: 12 }, usePointStyle: true } }
+          }
+        }
+      });
+    }
+
+    // 2. Zone Bar Chart
+    initZoneChart('zoneChartCanvas', [
+      { zone_name: 'Front Row', avg_engagement: 84.2 },
+      { zone_name: 'Middle Row', avg_engagement: 75.1 },
+      { zone_name: 'Back Row', avg_engagement: 58.4 }
+    ]);
+  });
+</script>
+{% endblock %}

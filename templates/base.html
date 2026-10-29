@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Multimodal Classroom Intelligence Agent{% endblock %}</title>
+  
+  <!-- Core & Component Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  
+  <!-- Offline Chart.js -->
+  <script src="{{ url_for('static', filename='libs/chart.umd.min.js') }}"></script>
+  
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Navigation Sidebar -->
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12h5l3 7 4-14 3 7h5"></path>
+        </svg>
+      </div>
+      <div class="brand-title">
+        <h1>OmniClass AI</h1>
+        <p>Multimodal Agent</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span>Live Console</span>
+        <span class="badge-pill">LIVE</span>
+      </a>
+
+      <a href="{{ url_for('attendance') }}" class="nav-link {% if request.endpoint == 'attendance' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <polyline points="17 11 19 13 23 9"></polyline>
+        </svg>
+        <span>Attendance Roster</span>
+        <span class="badge-pill" id="sustainedRateBadge">88%</span>
+      </a>
+
+      <a href="{{ url_for('engagement') }}" class="nav-link {% if request.endpoint == 'engagement' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+        <span>Engagement Dynamics</span>
+      </a>
+
+      <a href="{{ url_for('suggestions') }}" class="nav-link {% if request.endpoint == 'suggestions' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+        </svg>
+        <span>AI Teaching Suggestions</span>
+        <span class="badge-pill" id="suggestionsCountBadge" style="background: rgba(99, 102, 241, 0.25); color: #818cf8;">4 Active</span>
+      </a>
+
+      <a href="{{ url_for('session_report', session_id=session.id) }}" class="nav-link {% if request.endpoint == 'session_report' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Session Report</span>
+      </a>
+
+      <a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span>Thresholds & Privacy</span>
+      </a>
+    </nav>
+
+    <!-- Privacy Shield / Offline Guarantee -->
+    <div class="sidebar-footer">
+      <div class="privacy-badge">
+        <span class="status-dot"></span>
+        <div>
+          <strong style="color: #f8fafc; font-size: 0.8rem; display: block;">100% Offline AI</strong>
+          <span>Privacy Shield Active</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Container -->
+  <div class="app-main">
+    <!-- Top Bar -->
+    <header class="top-navbar">
+      <div class="session-info">
+        <div class="session-title-wrap">
+          <h2>
+            {{ session.title }}
+            <span class="course-tag">{{ session.course_code }}</span>
+          </h2>
+          <div class="session-meta">
+            Instructor: <strong>{{ session.instructor_name }}</strong> • Status: <span class="status-tag present" style="padding: 1px 7px; font-size: 0.7rem;">RECORDING ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <!-- Quick Simulation Scenario Picker -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">SIMULATION:</span>
+          <select id="simScenarioSelect" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem;">
+            <option value="normal">Normal Lecture Dynamic</option>
+            <option value="monologue_drop">Monologue Attention Drop (Scenario 2 & 3)</option>
+            <option value="interactive_peak">Discussion & Q&A Peak (Scenario 2)</option>
+            <option value="drowsiness">Fatigue & Drowsiness Slump</option>
+          </select>
+        </div>
+
+        <a href="{{ url_for('export_attendance_csv', session_id=session.id) }}" class="btn btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export CSV
+        </a>
+
+        <button id="endSessionBtn" class="btn btn-outline-danger">
+          End Session
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <main class="page-container">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <!-- Real-time Alerts Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- End Session Dialog Script -->
+  <script>
+    document.getElementById('endSessionBtn')?.addEventListener('click', async () => {
+      if (confirm('Conclude classroom session? This will finalize sustained attendance calculations and lock session analytics.')) {
+        const res = await fetch('/api/session/stop', { method: 'POST' });
+        const data = await res.json();
+        window.location.href = `/report/${data.session_id}`;
+      }
+    });
+
+    document.getElementById('simScenarioSelect')?.addEventListener('change', (e) => {
+      if (window.CameraManager) {
+        window.CameraManager.startSimulation(e.target.value);
+      }
+    });
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

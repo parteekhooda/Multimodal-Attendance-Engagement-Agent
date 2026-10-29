@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Cloudflare Tunnel Binary
+cloudflared.exe
+
+# SQLite temporary journals
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
